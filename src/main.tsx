@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { Bike, CalendarPlus, Car, Copy, ExternalLink, GripVertical, Hotel, MoveVertical, Pencil, Plane, Plus, Sailboat, Train, Trash2, X } from "lucide-react";
 import "./styles.css";
 
-const API = "http://127.0.0.1:8000/api";
+const API = (import.meta.env.VITE_API_BASE ?? "/api").replace(/\/$/, "");
 const DAY_WIDTH = 220;
 const TOTAL_WIDTH = 132;
 const MIN_BOOKING_WIDTH = 230;

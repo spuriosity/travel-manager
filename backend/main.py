@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+import os
 from datetime import date
+from pathlib import Path
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
@@ -28,9 +32,10 @@ from backend.schemas import (
 PALETTE = ["#9bc6ff", "#b8e0c3", "#f6c6d6", "#f9d99a", "#cdb7f6", "#a7ded9", "#ffc4a3"]
 
 app = FastAPI(title="Travel Manager")
+_cors_origins = os.environ.get("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=[origin.strip() for origin in _cors_origins if origin.strip()],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -415,3 +420,17 @@ def trip_view(trip_id: int, session: Session = Depends(get_session)) -> dict:
         "dates": [day.isoformat() for day in date_range(trip.start_date, trip.end_date)],
         "lanes": lanes,
     }
+
+
+_static_dir = Path(os.environ.get("STATIC_DIR", Path(__file__).resolve().parents[1] / "dist"))
+if _static_dir.is_dir():
+    app.mount("/assets", StaticFiles(directory=_static_dir / "assets"), name="assets")
+
+    @app.get("/{full_path:path}")
+    def spa_fallback(full_path: str):
+        if full_path.startswith("api/"):
+            raise HTTPException(status_code=404)
+        index = _static_dir / "index.html"
+        if not index.is_file():
+            raise HTTPException(status_code=404)
+        return FileResponse(index)

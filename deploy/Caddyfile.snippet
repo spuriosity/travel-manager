@@ -1,0 +1,13 @@
+# Append this to /etc/caddy/Caddyfile on hub, then `systemctl reload caddy`.
+# All requests are sent to oauth2-proxy, which enforces GitHub OAuth and
+# forwards approved traffic to the travel-manager container upstream.
+
+travel.spuriosity.io {
+	import security_headers
+	header X-Robots-Tag "noindex, nofollow, noarchive, nosnippet"
+
+	reverse_proxy localhost:4180 {
+		header_down -Server
+		header_down -Via
+	}
+}

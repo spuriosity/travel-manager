@@ -1,0 +1,52 @@
+services:
+  travel-manager:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: travel-manager:latest
+    container_name: travel-manager
+    restart: unless-stopped
+    expose:
+      - "8000"
+    volumes:
+      - travel_data:/data
+    networks:
+      - travel
+
+  oauth2-proxy:
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
+    container_name: travel-oauth2-proxy
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./allowed_emails.txt:/etc/oauth2-proxy/allowed_emails.txt:ro
+    command:
+      - --provider=google
+      - --http-address=0.0.0.0:4180
+      - --reverse-proxy=true
+      - --upstream=http://travel-manager:8000
+      - --redirect-url=https://travel.spuriosity.io/oauth2/callback
+      - --cookie-secure=true
+      - --cookie-samesite=lax
+      - --cookie-domain=travel.spuriosity.io
+      - --email-domain=*
+      - --authenticated-emails-file=/etc/oauth2-proxy/allowed_emails.txt
+      - --set-xauthrequest=true
+      - --pass-access-token=false
+      - --pass-authorization-header=false
+      - --skip-provider-button=true
+      - --silence-ping-logging=true
+    ports:
+      - 127.0.0.1:4180:4180
+    networks:
+      - travel
+    depends_on:
+      - travel-manager
+
+volumes:
+  travel_data:
+
+networks:
+  travel:
+    driver: bridge

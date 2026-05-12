@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterator
@@ -9,7 +10,7 @@ from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_DB_PATH = ROOT / "local" / "travel-manager.sqlite3"
+DEFAULT_DB_PATH = Path(os.environ.get("DB_DIR", ROOT / "local")) / "travel-manager.sqlite3"
 
 
 class Base(DeclarativeBase):
