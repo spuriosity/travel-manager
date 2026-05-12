@@ -1,0 +1,13 @@
+local/
+node_modules/
+dist/
+.venv/
+.nwave/
+.pytest_cache/
+.DS_Store
+__pycache__/
+*.py[cod]
+*.db
+*.sqlite*
+.env
+.env.*

@@ -1,0 +1,928 @@
+:root {
+  color: #263238;
+  background: #f7f3ee;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+.button-link {
+  align-items: center;
+  background: #2d4654;
+  border: 0;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 8px;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 14px;
+  text-decoration: none;
+}
+
+button.secondary,
+.button-link.secondary {
+  background: #e4e9e9;
+  color: #263238;
+}
+
+.pill-action-link {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.62);
+  border-radius: 999px;
+  color: #405458;
+  display: inline-flex;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0 7px;
+  position: relative;
+  text-decoration: none;
+}
+
+.booking-pill-short .pill-action-link {
+  min-height: 24px;
+}
+
+.pill-action-link:hover,
+.pill-action-link:focus-visible {
+  background: rgba(45, 70, 84, 0.78);
+  color: white;
+  outline: 2px solid rgba(45, 70, 84, 0.18);
+  outline-offset: 2px;
+}
+
+.pill-action-link::after {
+  background: #263238;
+  border-radius: 6px;
+  bottom: calc(100% + 8px);
+  color: white;
+  content: attr(data-tooltip);
+  font-size: 11px;
+  font-weight: 800;
+  left: 50%;
+  opacity: 0;
+  padding: 5px 7px;
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(-50%) translateY(2px);
+  transition: opacity 120ms ease, transform 120ms ease;
+  white-space: nowrap;
+  z-index: 80;
+}
+
+.pill-action-link:hover::after,
+.pill-action-link:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  padding: 24px;
+}
+
+.topbar {
+  align-items: flex-end;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin: 0 auto 18px;
+  max-width: 1280px;
+}
+
+.topbar h1 {
+  font-size: 34px;
+  letter-spacing: 0;
+  line-height: 1.1;
+  margin: 4px 0 6px;
+}
+
+.topbar span,
+.lane-label small,
+.pill-copy span {
+  color: #68767a;
+}
+
+.eyebrow {
+  color: #7c8d85;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.topbar-actions,
+.lane-tools {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.topbar select,
+.lane-tools input,
+.trip-create input,
+.travel-create input,
+.travel-create select,
+.booking-modal input,
+.booking-modal select,
+.booking-modal textarea {
+  background: white;
+  border: 1px solid #d6dddc;
+  border-radius: 8px;
+  min-height: 40px;
+  padding: 8px 10px;
+}
+
+.lane-tools {
+  margin: 0 auto 16px;
+  max-width: 1280px;
+}
+
+.lane-tools input {
+  min-width: 240px;
+}
+
+.board {
+  background: #fffaf4;
+  border: 1px solid #eadfd4;
+  border-radius: 8px;
+  box-shadow: 0 16px 40px rgba(73, 53, 31, 0.08);
+  flex: 1 1 auto;
+  margin: 0;
+  max-width: none;
+  overflow: hidden;
+  min-height: 0;
+  width: 100%;
+}
+
+.board-scroll {
+  height: 100%;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sleeping-row,
+.date-row,
+.lane {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  min-width: max-content;
+}
+
+.sleeping-label {
+  align-items: center;
+  background: #eef6f2;
+  border-bottom: 1px solid #d8e8df;
+  border-right: 1px solid #d8e8df;
+  color: #426459;
+  display: flex;
+  font-size: 13px;
+  font-weight: 800;
+  height: 38px;
+  padding: 0 16px;
+  position: sticky;
+  left: 0;
+  z-index: 4;
+}
+
+.lane-label {
+  background: #fffaf4;
+  border-right: 1px solid #eadfd4;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 118px;
+  padding: 18px 16px;
+  position: sticky;
+  left: 0;
+  z-index: 3;
+}
+
+.lane-label-topline {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  min-height: 30px;
+}
+
+.lane-name-button {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: text;
+  justify-content: flex-start;
+  min-height: 0;
+  padding: 0;
+}
+
+.lane-name-button:hover,
+.lane-name-button:focus-visible {
+  background: transparent;
+  color: #263238;
+  outline: none;
+}
+
+.lane-drag-handle {
+  min-height: 30px;
+  padding: 0 8px;
+}
+
+.lane-rename-input {
+  background: white;
+  border: 1px solid #c8d1cf;
+  border-radius: 6px;
+  color: #263238;
+  font-size: 15px;
+  font-weight: 700;
+  min-height: 32px;
+  padding: 4px 8px;
+}
+
+.lane-label.spacer {
+  min-height: 48px;
+}
+
+.lane-swatch {
+  border-radius: 999px;
+  height: 10px;
+  width: 42px;
+}
+
+.date-grid,
+.sleeping-grid,
+.lane-canvas {
+  display: grid;
+  grid-auto-columns: 220px;
+  grid-auto-flow: column;
+}
+
+.sleeping-grid {
+  position: relative;
+}
+
+.sleeping-grid-cell {
+  align-items: center;
+  background: #f4fbf7;
+  border-bottom: 1px solid #d8e8df;
+  border-right: 1px solid #d8e8df;
+  display: flex;
+  height: 38px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0 6px;
+}
+
+.sleeping-boundary-label {
+  background: white;
+  border: 1px solid #d8e8df;
+  border-radius: 999px;
+  color: #365a50;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.15;
+  max-width: 160px;
+  overflow: hidden;
+  padding: 4px 8px;
+  position: absolute;
+  text-align: center;
+  text-overflow: ellipsis;
+  top: 7px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.date-cell {
+  align-items: center;
+  border-right: 1px solid #eadfd4;
+  color: #587070;
+  display: flex;
+  font-size: 13px;
+  font-weight: 700;
+  height: 48px;
+  justify-content: center;
+  padding: 0 8px;
+  text-align: center;
+}
+
+.lane-canvas {
+  background: repeating-linear-gradient(90deg, transparent 0, transparent 219px, #eadfd4 219px, #eadfd4 220px);
+  min-height: 118px;
+  position: relative;
+}
+
+.lane-confirmed .lane-label {
+  background: #f1fbf3;
+}
+
+.lane-unsorted .lane-label {
+  background: #f0f1f5;
+}
+
+.travel-lane .lane-label,
+.travel-lane-label {
+  background: #fff7dc;
+  min-height: 16px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+}
+
+.travel-canvas {
+  background: repeating-linear-gradient(90deg, #fffaf0 0, #fffaf0 219px, #eadfd4 219px, #eadfd4 220px);
+  min-height: 16px;
+}
+
+.travel-grid-line {
+  min-height: 16px;
+}
+
+.travel-day-target {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  border-right: 1px solid #eadfd4;
+  color: inherit;
+  cursor: pointer;
+  min-height: 16px;
+  padding: 0;
+}
+
+.travel-day-target:hover,
+.travel-day-target:focus-visible {
+  background: rgba(232, 215, 168, 0.28);
+  outline: inset 2px rgba(122, 98, 32, 0.18);
+}
+
+.travel-dot {
+  align-items: center;
+  background: #fff9dc;
+  border: 2px solid #d8bd68;
+  border-radius: 999px;
+  box-shadow: 0 5px 14px rgba(110, 92, 45, 0.16);
+  color: #6a5416;
+  display: flex;
+  height: 28px;
+  justify-content: center;
+  left: 0;
+  min-height: 28px;
+  padding: 0;
+  position: absolute;
+  top: -6px;
+  transform: translateX(-50%);
+  width: 28px;
+  z-index: 4;
+}
+
+.travel-dot:hover,
+.travel-dot:focus-visible {
+  background: #7a6220;
+  border-color: #7a6220;
+  color: white;
+  outline: 2px solid rgba(122, 98, 32, 0.2);
+  outline-offset: 2px;
+}
+
+.travel-dot::after {
+  background: #263238;
+  border-radius: 6px;
+  bottom: calc(100% + 8px);
+  color: white;
+  content: attr(data-tooltip);
+  font-size: 11px;
+  font-weight: 800;
+  left: 50%;
+  opacity: 0;
+  padding: 5px 7px;
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(-50%) translateY(2px);
+  transition: opacity 120ms ease, transform 120ms ease;
+  white-space: nowrap;
+  z-index: 80;
+}
+
+.travel-dot:hover::after,
+.travel-dot:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.grid-line {
+  border-right: 1px solid #eadfd4;
+  min-height: inherit;
+}
+
+.booking-pill {
+  align-items: stretch;
+  border: 2px solid;
+  border-radius: 999px;
+  box-shadow: 0 9px 22px rgba(58, 68, 72, 0.13);
+  display: flex;
+  gap: 4px;
+  min-height: 58px;
+  overflow: visible;
+  padding: 6px 7px;
+  position: absolute;
+  top: 22px;
+  touch-action: none;
+}
+
+.booking-pill-short {
+  align-items: center;
+  display: grid;
+  gap: 3px 6px;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: 1fr auto;
+  min-height: 72px;
+  padding: 7px 9px;
+}
+
+.booking-pill::before {
+  background: inherit;
+  border-radius: inherit;
+  content: "";
+  inset: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.booking-ghost {
+  border-style: dashed;
+  box-shadow: none;
+  opacity: 0.54;
+  pointer-events: none;
+  transform: translateY(8px);
+  z-index: 4;
+}
+
+.ghost-handle {
+  align-items: center;
+  align-self: center;
+  background: rgba(255, 255, 255, 0.52);
+  border-radius: 999px;
+  color: #405458;
+  display: flex;
+  min-height: 34px;
+  padding: 0 7px;
+}
+
+.drag-handle {
+  align-self: center;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  color: #405458;
+  min-height: 34px;
+  padding: 0 7px;
+  position: relative;
+}
+
+.booking-pill-short .drag-handle {
+  grid-row: 1 / span 2;
+}
+
+.drag-handle:hover,
+.drag-handle:focus-visible,
+.pill-actions button:hover,
+.pill-actions button:focus-visible {
+  background: rgba(45, 70, 84, 0.78);
+  color: white;
+  outline: 2px solid rgba(45, 70, 84, 0.18);
+  outline-offset: 2px;
+}
+
+.pill-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.booking-pill-short .pill-copy {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.pill-copy strong,
+.pill-copy span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pill-copy em {
+  align-self: flex-start;
+  background: #ffe88f;
+  border-radius: 999px;
+  color: #594c12;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  margin-top: 3px;
+  padding: 2px 7px;
+}
+
+.pill-copy b {
+  color: #476061;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.price-line {
+  color: #33494d;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.lane-total {
+  align-items: flex-start;
+  color: #405458;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: center;
+  min-height: 58px;
+  position: absolute;
+  top: 22px;
+  width: 108px;
+}
+
+.lane-total span {
+  color: #7c8d85;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.lane-total strong {
+  font-size: 16px;
+  letter-spacing: 0;
+}
+
+.pill-actions {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  gap: 3px;
+}
+
+.booking-pill-short .pill-actions {
+  grid-column: 2;
+  grid-row: 2;
+  justify-content: flex-start;
+}
+
+.pill-actions button {
+  background: rgba(255, 255, 255, 0.62);
+  border-radius: 999px;
+  color: #405458;
+  min-height: 28px;
+  padding: 0 7px;
+  position: relative;
+}
+
+.booking-pill-short .pill-actions button {
+  min-height: 24px;
+}
+
+.drag-handle::after,
+.pill-actions button::after {
+  background: #263238;
+  border-radius: 6px;
+  bottom: calc(100% + 8px);
+  color: white;
+  content: attr(data-tooltip);
+  font-size: 11px;
+  font-weight: 800;
+  left: 50%;
+  opacity: 0;
+  padding: 5px 7px;
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(-50%) translateY(2px);
+  transition: opacity 120ms ease, transform 120ms ease;
+  white-space: nowrap;
+  z-index: 80;
+}
+
+.drag-handle:hover::after,
+.drag-handle:focus-visible::after,
+.pill-actions button:hover::after,
+.pill-actions button:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.bag-gap {
+  align-items: center;
+  background: rgba(255, 232, 143, 0.56);
+  border: 1px dashed #d6a72f;
+  border-radius: 999px;
+  color: #6a5416;
+  display: flex;
+  font-size: 11px;
+  font-weight: 800;
+  height: 28px;
+  justify-content: center;
+  position: absolute;
+  top: 86px;
+}
+
+.modal-backdrop {
+  align-items: center;
+  background: rgba(38, 50, 56, 0.25);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 18px;
+  position: fixed;
+  z-index: 40;
+}
+
+.booking-modal {
+  background: #fffaf4;
+  border-radius: 8px;
+  box-shadow: 0 24px 80px rgba(28, 36, 38, 0.22);
+  display: grid;
+  gap: 12px;
+  max-height: calc(100vh - 32px);
+  max-width: 520px;
+  overflow: auto;
+  padding: 18px;
+  width: 100%;
+}
+
+.travel-modal {
+  background: #fffaf4;
+  border-radius: 8px;
+  box-shadow: 0 24px 80px rgba(28, 36, 38, 0.22);
+  display: grid;
+  gap: 12px;
+  max-height: calc(100vh - 32px);
+  max-width: 480px;
+  overflow: auto;
+  padding: 18px;
+  width: 100%;
+}
+
+.travel-modal header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.travel-modal header h2 {
+  margin: 0;
+}
+
+.travel-modal header button {
+  background: #e4e9e9;
+  color: #263238;
+  min-height: 34px;
+  padding: 0 9px;
+}
+
+.travel-mode-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.travel-mode-option {
+  align-items: center;
+  background: #eef2f2;
+  border: 1px solid #d7dedc;
+  border-radius: 8px;
+  color: #34474d;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 72px;
+  justify-content: center;
+  padding: 10px;
+}
+
+.travel-mode-option.active {
+  background: #dfeaf0;
+  border-color: #92adbb;
+  color: #263238;
+}
+
+.travel-modal footer {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.travel-modal label {
+  display: grid;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.booking-modal header,
+.booking-modal footer {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.booking-modal header h2 {
+  margin: 0;
+}
+
+.booking-modal header button {
+  background: #e4e9e9;
+  color: #263238;
+  min-height: 34px;
+  padding: 0 9px;
+}
+
+.booking-modal label {
+  display: grid;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.booking-modal textarea {
+  min-height: 82px;
+  resize: vertical;
+}
+
+.form-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.empty-shell {
+  align-items: center;
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  padding: 24px;
+}
+
+.empty-panel {
+  align-items: center;
+  background: #fffaf4;
+  border: 1px solid #eadfd4;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 420px;
+  padding: 28px;
+  text-align: center;
+}
+
+.trip-create {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+
+.inline-trip-create {
+  align-items: center;
+  grid-template-columns: minmax(180px, 1fr) 160px 160px minmax(180px, 1fr) auto;
+  margin: 0 auto 16px;
+  max-width: 1280px;
+}
+
+.error,
+.error-strip {
+  color: #a53c3c;
+}
+
+.error-strip {
+  align-items: center;
+  background: #fff0f0;
+  border: 1px solid #f4cdcd;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto 12px;
+  max-width: 1280px;
+  padding: 10px 12px;
+}
+
+.error-strip button {
+  background: transparent;
+  color: #a53c3c;
+  min-height: 28px;
+  padding: 0 6px;
+}
+
+@media (max-width: 720px) {
+  .app-shell {
+    padding: 14px 0;
+  }
+
+  .topbar {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 0 14px;
+  }
+
+  .topbar-actions,
+  .lane-tools,
+  .inline-trip-create {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .inline-trip-create {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .topbar h1 {
+    font-size: 28px;
+  }
+
+  .lane-tools,
+  .inline-trip-create,
+  .error-strip {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .date-row,
+  .sleeping-row,
+  .lane {
+    grid-template-columns: 142px 1fr;
+  }
+
+  .lane-label {
+    min-height: 112px;
+    padding: 16px 12px;
+  }
+
+  .booking-pill {
+    min-height: 64px;
+  }
+
+  .booking-pill-short {
+    min-height: 78px;
+  }
+
+  .drag-handle {
+    min-height: 40px;
+    padding: 0 10px;
+  }
+
+  .pill-actions button {
+    min-height: 34px;
+    padding: 0 9px;
+  }
+
+  .booking-pill-short .pill-actions button {
+    min-height: 30px;
+  }
+
+  .drag-handle::after,
+  .pill-actions button::after {
+    display: none;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
