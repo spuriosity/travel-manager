@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Bike, CalendarPlus, Car, Copy, ExternalLink, GripVertical, Hotel, MoveVertical, Pencil, Plane, Plus, Sailboat, Train, Trash2, X } from "lucide-react";
+import { Bike, CalendarPlus, Car, ChevronDown, ChevronUp, Copy, ExternalLink, GripVertical, Hotel, MoveVertical, Pencil, Plane, Plus, Sailboat, Train, Trash2, X } from "lucide-react";
 import "./styles.css";
 
 const API = (import.meta.env.VITE_API_BASE ?? "/api").replace(/\/$/, "");
@@ -103,6 +103,9 @@ function App() {
   const [dragTimelineTargetId, setDragTimelineTargetId] = useState<number | null>(null);
   const [drag, setDrag] = useState<{ booking: Booking; sourceTimelineId: number | null; x: number; y: number } | null>(null);
   const [dragTargetLaneId, setDragTargetLaneId] = useState<string | null>(null);
+  const [showChrome, setShowChrome] = useState(() =>
+    typeof window === "undefined" ? true : !window.matchMedia("(max-width: 720px)").matches,
+  );
   const [error, setError] = useState<string | null>(null);
   const boardRef = useRef<HTMLDivElement | null>(null);
 
@@ -399,49 +402,65 @@ function App() {
 
   return (
     <main className="app-shell">
-      <header className="topbar">
-        <div>
-          <p className="eyebrow">Accommodation timelines</p>
-          <h1>{view.trip.name}</h1>
-          <span>{formatDate(view.trip.start_date)} - {formatDate(view.trip.end_date)}</span>
-        </div>
-        <div className="topbar-actions">
-          <select value={activeTripId ?? ""} onChange={(event) => setActiveTripId(Number(event.target.value))}>
-            {trips.map((trip) => (
-              <option key={trip.id} value={trip.id}>{trip.name}</option>
-            ))}
-          </select>
-          <button className="secondary" onClick={openEditTrip}><Pencil size={18} /> Edit trip</button>
-          {view.trip.trip_url && (
-            <a className="button-link secondary" href={view.trip.trip_url} target="_blank" rel="noreferrer">
-              <ExternalLink size={18} /> Go to URL
-            </a>
-          )}
-          <button className="secondary" onClick={openCreateTrip}><CalendarPlus size={18} /> New trip</button>
-          <button className="secondary" onClick={() => setShowTravelForm((value) => !value)}><Train size={18} /> Travel</button>
-          <button onClick={openNewBooking}><Plus size={18} /> Booking</button>
-        </div>
-      </header>
-
-      {showTripForm && (
-        <section className="trip-create inline-trip-create">
-          <input placeholder="Trip name" value={tripForm.name} onChange={(event) => setTripForm({ ...tripForm, name: event.target.value })} />
-          <input type="date" value={tripForm.start_date} onChange={(event) => setTripForm({ ...tripForm, start_date: event.target.value })} />
-          <input type="date" value={tripForm.end_date} onChange={(event) => setTripForm({ ...tripForm, end_date: event.target.value })} />
-          <input placeholder="Trip URL" value={tripForm.trip_url} onChange={(event) => setTripForm({ ...tripForm, trip_url: event.target.value })} />
-          <button disabled={!tripForm.name || !tripForm.start_date || !tripForm.end_date} onClick={saveTripDetails}>
-            {editingTripId ? <Pencil size={18} /> : <CalendarPlus size={18} />}
-            {editingTripId ? "Save trip" : "Create trip"}
+      <section className={`trip-chrome ${showChrome ? "is-open" : "is-collapsed"}`}>
+        <div className="trip-chrome-head">
+          <button
+            type="button"
+            className="trip-chrome-toggle"
+            aria-expanded={showChrome}
+            onClick={() => setShowChrome((value) => !value)}
+          >
+            <div className="trip-chrome-copy">
+              <p className="eyebrow">Accommodation timelines</p>
+              <h1>{view.trip.name}</h1>
+              <span>{formatDate(view.trip.start_date)} - {formatDate(view.trip.end_date)}</span>
+            </div>
+            <span className="trip-chrome-chevron" aria-hidden="true">
+              {showChrome ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+            </span>
           </button>
-        </section>
-      )}
+          <div className="topbar-actions">
+            <select value={activeTripId ?? ""} onChange={(event) => setActiveTripId(Number(event.target.value))}>
+              {trips.map((trip) => (
+                <option key={trip.id} value={trip.id}>{trip.name}</option>
+              ))}
+            </select>
+            <button className="secondary" onClick={openEditTrip}><Pencil size={18} /> Edit trip</button>
+            {view.trip.trip_url && (
+              <a className="button-link secondary" href={view.trip.trip_url} target="_blank" rel="noreferrer">
+                <ExternalLink size={18} /> Go to URL
+              </a>
+            )}
+            <button className="secondary" onClick={openCreateTrip}><CalendarPlus size={18} /> New trip</button>
+            <button className="secondary" onClick={() => setShowTravelForm((value) => !value)}><Train size={18} /> Travel</button>
+            <button onClick={openNewBooking}><Plus size={18} /> Booking</button>
+          </div>
+        </div>
 
-      <section className="lane-tools">
-        <input value={timelineName} onChange={(event) => setTimelineName(event.target.value)} placeholder="New swimlane name" />
-        <button onClick={createTimeline}><Plus size={18} /> Add swimlane</button>
+        {showChrome && (
+          <div className="trip-chrome-body">
+            {showTripForm && (
+              <section className="trip-create inline-trip-create">
+                <input placeholder="Trip name" value={tripForm.name} onChange={(event) => setTripForm({ ...tripForm, name: event.target.value })} />
+                <input type="date" value={tripForm.start_date} onChange={(event) => setTripForm({ ...tripForm, start_date: event.target.value })} />
+                <input type="date" value={tripForm.end_date} onChange={(event) => setTripForm({ ...tripForm, end_date: event.target.value })} />
+                <input placeholder="Trip URL" value={tripForm.trip_url} onChange={(event) => setTripForm({ ...tripForm, trip_url: event.target.value })} />
+                <button disabled={!tripForm.name || !tripForm.start_date || !tripForm.end_date} onClick={saveTripDetails}>
+                  {editingTripId ? <Pencil size={18} /> : <CalendarPlus size={18} />}
+                  {editingTripId ? "Save trip" : "Create trip"}
+                </button>
+              </section>
+            )}
+
+            <section className="lane-tools">
+              <input value={timelineName} onChange={(event) => setTimelineName(event.target.value)} placeholder="New swimlane name" />
+              <button onClick={createTimeline}><Plus size={18} /> Add swimlane</button>
+            </section>
+
+            {error && <div className="error-strip">{error}<button onClick={() => setError(null)}><X size={14} /></button></div>}
+          </div>
+        )}
       </section>
-
-      {error && <div className="error-strip">{error}<button onClick={() => setError(null)}><X size={14} /></button></div>}
 
       <section className="board" ref={boardRef}>
         <div className="board-scroll">

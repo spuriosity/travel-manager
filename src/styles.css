@@ -111,23 +111,63 @@ button:disabled {
   padding: 24px;
 }
 
-.topbar {
+.trip-chrome {
+  margin: 0 auto 18px;
+  max-width: 1280px;
+  width: 100%;
+}
+
+.trip-chrome-head {
   align-items: flex-end;
   display: flex;
   gap: 24px;
   justify-content: space-between;
-  margin: 0 auto 18px;
-  max-width: 1280px;
 }
 
-.topbar h1 {
+.trip-chrome-toggle {
+  align-items: flex-start;
+  background: transparent;
+  border: 0;
+  color: #263238;
+  display: flex;
+  flex: 1 1 auto;
+  gap: 10px;
+  justify-content: space-between;
+  min-height: 0;
+  padding: 0;
+  width: 100%;
+  text-align: left;
+}
+
+.trip-chrome-copy {
+  display: grid;
+  gap: 2px;
+}
+
+.trip-chrome-copy h1 {
   font-size: 34px;
   letter-spacing: 0;
   line-height: 1.1;
   margin: 4px 0 6px;
 }
 
-.topbar span,
+.trip-chrome-copy span,
+.trip-chrome-chevron {
+  color: #68767a;
+}
+
+.trip-chrome-chevron {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  min-height: 44px;
+}
+
+.trip-chrome-body {
+  display: grid;
+  gap: 16px;
+}
+
 .lane-label small,
 .pill-copy span {
   color: #68767a;
@@ -200,7 +240,9 @@ button:disabled {
 .lane {
   display: grid;
   grid-template-columns: 190px 1fr;
+  isolation: isolate;
   min-width: max-content;
+  position: relative;
 }
 
 .sleeping-label {
@@ -216,7 +258,7 @@ button:disabled {
   padding: 0 16px;
   position: sticky;
   left: 0;
-  z-index: 4;
+  z-index: 3;
 }
 
 .lane-label {
@@ -293,6 +335,7 @@ button:disabled {
 
 .sleeping-grid {
   position: relative;
+  z-index: 1;
 }
 
 .sleeping-grid-cell {
@@ -344,6 +387,7 @@ button:disabled {
   background: repeating-linear-gradient(90deg, transparent 0, transparent 219px, #eadfd4 219px, #eadfd4 220px);
   min-height: 118px;
   position: relative;
+  z-index: 1;
 }
 
 .lane-confirmed .lane-label {
@@ -850,15 +894,59 @@ button:disabled {
   padding: 0 6px;
 }
 
+.trip-chrome.is-collapsed .topbar-actions,
+.trip-chrome.is-collapsed .trip-chrome-body {
+  display: none;
+}
+
+.trip-chrome.is-collapsed .trip-chrome-toggle {
+  align-items: center;
+}
+
+.trip-chrome.is-collapsed .trip-chrome-copy {
+  gap: 0;
+}
+
+.trip-chrome.is-collapsed .trip-chrome-copy .eyebrow,
+.trip-chrome.is-collapsed .trip-chrome-copy span {
+  display: none;
+}
+
+.trip-chrome.is-collapsed .trip-chrome-copy h1 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.trip-chrome.is-collapsed .trip-chrome-chevron {
+  min-height: 0;
+}
+
 @media (max-width: 720px) {
   .app-shell {
     padding: 14px 0;
   }
 
-  .topbar {
+  .trip-chrome {
+    margin-bottom: 14px;
+  }
+
+  .trip-chrome-head {
     align-items: stretch;
     flex-direction: column;
     padding: 0 14px;
+  }
+
+  .trip-chrome-toggle {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .trip-chrome-copy h1 {
+    font-size: 28px;
+  }
+
+  .trip-chrome-copy span {
+    font-size: 14px;
   }
 
   .topbar-actions,
@@ -871,10 +959,6 @@ button:disabled {
   .inline-trip-create {
     display: grid;
     grid-template-columns: 1fr;
-  }
-
-  .topbar h1 {
-    font-size: 28px;
   }
 
   .lane-tools,
