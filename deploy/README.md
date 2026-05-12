@@ -39,13 +39,15 @@ oauth2-proxy is the upstream proxy: every request hits it first; only sessions w
    # then edit .env to add OAUTH2_PROXY_CLIENT_ID and OAUTH2_PROXY_CLIENT_SECRET
    ```
 
-5. **Add the Caddy site**: append `Caddyfile.snippet` to `/etc/caddy/Caddyfile`, then:
+5. **Create the email allowlist** (see [Allowlist](#allowlist) below).
+
+6. **Add the Caddy site**: append `Caddyfile.snippet` to `/etc/caddy/Caddyfile`, then:
 
    ```bash
    systemctl reload caddy
    ```
 
-6. **Build & start**:
+7. **Build & start**:
 
    ```bash
    docker compose up -d --build
@@ -53,7 +55,15 @@ oauth2-proxy is the upstream proxy: every request hits it first; only sessions w
 
 ## Allowlist
 
-`allowed_emails.txt` — one email per line. To add another user, append a line and restart oauth2-proxy:
+`allowed_emails.txt` is **not** in the git repo (it's gitignored so the allowlist
+stays out of the public repo). Create it on the server before starting the stack:
+
+```bash
+cp /opt/travel-manager/deploy/allowed_emails.txt.example /opt/travel-manager/deploy/allowed_emails.txt
+$EDITOR /opt/travel-manager/deploy/allowed_emails.txt   # one email per line
+```
+
+To add another user later, append a line and restart oauth2-proxy:
 
 ```bash
 docker compose restart oauth2-proxy

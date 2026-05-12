@@ -1,0 +1,4 @@
+# One email per line. Only Google accounts matching these emails can authenticate.
+# Copy this file to allowed_emails.txt on the server (the real file is gitignored
+# so the allowlist stays out of the public repo).
+your-email@example.com

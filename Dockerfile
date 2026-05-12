@@ -5,6 +5,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 COPY tsconfig.json vite.config.ts index.html ./
 COPY src ./src
+# vite-env.d.ts is already inside src/
 RUN npm run build
 
 # --- Stage 2: python runtime ---

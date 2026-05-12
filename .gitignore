@@ -12,3 +12,4 @@ __pycache__/
 .env
 .env.*
 !.env.example
+deploy/allowed_emails.txt
